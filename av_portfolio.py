@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # Fund portfolio retrival and forecast from Alpha Vantage
-# Retreives current fund values and forecasts change in stock portfolio value using VTI and BND as proxies for overall market
+# Retrieves current quantity of shares from a Google sheet.
+# Retreives current fund values and forecasts change in stock portfolio value using VTI and BND as proxies for overall market.
 # Uses Adafruit 128x64 OLED Bonnet for Raspberry Pi[ID:3531]
 # Requires getShares.py
 # Issues Todo: elapsed time for percent change screen time zone issue
-# James S. Lucas - 20200509
+# James S. Lucas - 20200510
 import board
 import busio
 from digitalio import DigitalInOut, Direction, Pull
@@ -55,7 +56,7 @@ x = 0
 # Load default font.
 # font = ImageFont.load_default()
 
-# Or alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script.
+# Or alternatively load TTF fonts.  Make sure the .ttf font file is in the same directory as the python script.
 # Some other nice fonts to try: http://www.dafont.com/bitmap.php
 # JSL Load Custom Fonts
 font14 = ImageFont.truetype('VCR_OSD_MONO_1.001.ttf', 14)
@@ -147,7 +148,7 @@ def getQuotes():
                 str('{0:,.2f}'.format(float(price) * shares[ticker_symbol]))
                 ]
                 )
-        #Delay after each request to prevent exceeding Alpha Vantate request limit (5 / min)
+        #Delay after each request to prevent exceeding Alpha Vantage request limit (5 / min)
         delayLoopStart = datetime.datetime.now()
         elapsedTime = datetime.datetime.now() - delayLoopStart
         while elapsedTime.seconds <= 14:

@@ -1,7 +1,7 @@
 # Returns a dictionary of 401K {symbols: shares} from a specific Google Sheets spreadsheet
 # Module for use in av_portfolio.py program
 # If run directly from the command line it will store the shares as a JSON dictionary in shares.txt
-# James S. Lucas - 20190511
+# James S. Lucas - 20200510
 
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -11,6 +11,7 @@ def main():
 
 def getShares():
    scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+   # Modify the file name to match the name of your json credentials file.
    credentials = ServiceAccountCredentials.from_json_keyfile_name('JSL Python Sheets-450059ada1ac.json', scope)
    gc = gspread.authorize(credentials)
    sheet_title = '401K'
@@ -18,6 +19,7 @@ def getShares():
    wks = gc.open('401K Portfolio Data').worksheet(sheet_title)
 
    symbol_shares = 0.0
+   # Modify the list and dictionary to include ticker symbols in portfolio
    ticker_symbols = ['FSKAX','FSMAX','FSPSX','FXAIX','FXNAX','VTI','VBTLX','VIPSX','VTSAX']
    shares = {'FSKAX': 0.0,'FSMAX': 0.0,'FSPSX': 0.0,'FXAIX': 0.0,'FXNAX': 0.0,'VTI': 0.0,'VBTLX': 0.0,'VIPSX': 0.0,'VTSAX': 0.0, 'BND': 0.0}
 
