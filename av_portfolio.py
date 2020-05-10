@@ -312,6 +312,15 @@ def writeMessage(totalValueStocks, totalValueBonds, vtiChangePct, vtiDataTime, b
     else:
         messages.append('{0:.0f}'.format(forecastYears) + yearsText + '{0:.0f}'.format(forecastMonths) + monthsText)  #6
 
+    # Menu numbers:
+    #  0: Forecast Value
+    #  1: Market Change % and Market Status
+    # 11: Market Change % and Market Status
+    #  2: Percent Bonds
+    #  3: Time to 1.0 M
+    #  4: All
+    #  5: Blank
+
     if menuNumber == 0:
         # Display Forecast Value
         disp.fill(0)
@@ -339,7 +348,7 @@ def writeMessage(totalValueStocks, totalValueBonds, vtiChangePct, vtiDataTime, b
         sleep(.05)
 
     if menuNumber == 11:
-        # Display Market Change % and Market Status
+        # Display Market Change %, Market Status and Date & Time of close
         disp.fill(0)
         disp.show()
         draw.rectangle((0,0,width,height), outline=0, fill=0)
@@ -428,8 +437,9 @@ def buttonCheck(button_A, button_B, button_C, button_U, button_D, button_L, butt
             previous_menuNumber = menuNumber
             menuNumber = 5
 
-    # Note Normally OPEN switch
+    # Note Normally OPEN switch so use not
     if not button_C.value:
+        # Joystick button Display all
         button_press_time = datetime.datetime.now()
         if menuNumber < 4:
             previous_menuNumber = menuNumber
@@ -437,14 +447,17 @@ def buttonCheck(button_A, button_B, button_C, button_U, button_D, button_L, butt
         else:
             menuNumber = previous_menuNumber
     elif not button_A.value:
+        # Lower left button. Blank Display
         button_press_time = datetime.datetime.now()
         if menuNumber != 5:
             previous_menuNumber = menuNumber
             menuNumber = 5
     elif not button_B.value:
+        # Upper ritght button. Turn display back on
         button_press_time = datetime.datetime.now()
         menuNumber = previous_menuNumber
     elif not button_D.value:
+        # Joystick down. Advance up to next menu.
         button_press_time = datetime.datetime.now()
         if menuNumber == 0:
             menuNumber = 1
@@ -457,6 +470,7 @@ def buttonCheck(button_A, button_B, button_C, button_U, button_D, button_L, butt
         elif menuNumber == 4:
             menuNumber = 0
     elif not button_U.value:
+        # Joystick up. Advance down to next menu.
         button_press_time = datetime.datetime.now()
         if menuNumber == 4:
             menuNumber = 3
@@ -469,6 +483,7 @@ def buttonCheck(button_A, button_B, button_C, button_U, button_D, button_L, butt
         elif menuNumber == 0:
             menuNumber = 4
     elif not button_L.value or not button_R.value:
+        # Joystick left or right. Go between menu 1 and 11.
         button_press_time = datetime.datetime.now()
         if menuNumber == 1:
             menuNumber = 11
