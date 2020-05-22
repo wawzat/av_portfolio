@@ -212,7 +212,7 @@ def getQuotes():
 
 # Get change from initial VTI price
 def getVTI(vtiInitial, vtiChangePct, vtiDataTime, mktStat, menuNumber):
-    ts = TimeSeries(key='ALPHAVANTAGE_API_KEY', retries=10)
+    ts = TimeSeries(key='ALPHAVANTAGE_API_KEY', retries='10')
     data, meta_data = ts.get_intraday(symbol='VTI',interval='1min',outputsize='full')
     latest = max(data)
     vtiTimeNowString = latest
@@ -236,7 +236,7 @@ def getVTI(vtiInitial, vtiChangePct, vtiDataTime, mktStat, menuNumber):
 
 # Get change from initial BND price
 def getBND(bndInitial, bndChangePct, bndDataTime, mktStat, menuNumber):
-    ts = TimeSeries(key='ALPHAVANTAGE_API_KEY', retries=10)
+    ts = TimeSeries(key='ALPHAVANTAGE_API_KEY', retries='10')
     data, meta_data = ts.get_intraday(symbol='BND',interval='1min',outputsize='full')
     latest = max(data)
     bndTimeNowString = latest
