@@ -179,6 +179,7 @@ def getQuotes():
     table = PrettyTable()
     table.field_names = ["Type","Symbol","Shares","Price","Value","Percent"]
     table.align = "r"
+    table.add_row(["Stocks"," "," "," "," "," "])
     for ticker_symbol in ticker_symbols_stocks:
         price = latest_prices_stocks[ticker_symbol] 
         table.add_row(
@@ -190,7 +191,6 @@ def getQuotes():
                 " "
                 ]
                 )
-    table.add_row(["Stocks"," "," "," "," "," "])
     table.add_row(["Total Stocks"," "," "," ",str('{0:,.2f}'.format(totalValueStocks)),str('{0:,.2f}'.format(pct_stocks))])
     table.add_row([" "," "," "," "," "," "])
     table.add_row(["Bonds"," "," "," "," "," "])
