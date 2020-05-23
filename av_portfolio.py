@@ -128,6 +128,10 @@ def getQuotes():
     shares = getShares()
     time_remaining = (len(ticker_symbols_stocks) + len(ticker_symbols_bonds)) * 15
     ts = TimeSeries(key='ALPHAVANTAGE_API_KEY')
+    table = PrettyTable()
+    table.field_names = ["Type","Symbol","Shares","Price","Value","Percent"]
+    table.align = "r"
+    table.add_row(["Stocks"," "," "," "," "," "])
     for ticker_symbol in ticker_symbols_stocks:
         data, meta_data = ts.get_intraday(symbol=ticker_symbol,interval='1min')
         latest = max(data)
@@ -160,6 +164,9 @@ def getQuotes():
             disp.image(image)
             disp.show()
             sleep(1)
+    table.add_row(["Total Stocks"," "," "," ",str('{0:,.2f}'.format(totalValueStocks)),str('{0:,.2f}'.format(pct_stocks))])
+    table.add_row([" "," "," "," "," "," "])
+    table.add_row(["Bonds"," "," "," "," "," "])
     for ticker_symbol in ticker_symbols_bonds:
         data, meta_data = ts.get_intraday(symbol=ticker_symbol,interval='1min')
         latest = max(data)
@@ -195,13 +202,6 @@ def getQuotes():
             sleep(1)
     pct_stocks = totalValueStocks / (totalValueBonds + totalValueStocks)
     pct_bonds = totalValueBonds / (totalValueBonds + totalValueStocks)
-    table = PrettyTable()
-    table.field_names = ["Type","Symbol","Shares","Price","Value","Percent"]
-    table.align = "r"
-    table.add_row(["Stocks"," "," "," "," "," "])
-    table.add_row(["Total Stocks"," "," "," ",str('{0:,.2f}'.format(totalValueStocks)),str('{0:,.2f}'.format(pct_stocks))])
-    table.add_row([" "," "," "," "," "," "])
-    table.add_row(["Bonds"," "," "," "," "," "])
     table.add_row(["Total Bonds"," "," "," ",str('{0:,.2f}'.format(totalValueBonds)),str('{0:,.2f}'.format(pct_bonds))])
     table.add_row([" "," "," "," "," "," "])
     table.add_row(["Grand Total"," "," "," ",str('{0:,.2f}'.format((totalValueStocks + totalValueBonds)))," "])
