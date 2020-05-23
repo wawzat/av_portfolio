@@ -145,7 +145,8 @@ def getQuotes():
                 ticker_symbol,
                 str('{0:.3f}'.format(shares[ticker_symbol])),
                 str('{0:,.2f}'.format(float(price))),
-                str('{0:,.2f}'.format(float(price) * shares[ticker_symbol]))
+                str('{0:,.2f}'.format(float(price) * shares[ticker_symbol])),
+                " "
                 ]
                 )
         #Delay after each request to prevent exceeding Alpha Vantage request limit (5 / min)
@@ -163,7 +164,6 @@ def getQuotes():
             disp.image(image)
             disp.show()
             sleep(1)
-
     for ticker_symbol in ticker_symbols_bonds:
         data, meta_data = ts.get_intraday(symbol=ticker_symbol,interval='1min')
         latest = max(data)
@@ -178,7 +178,8 @@ def getQuotes():
                      ticker_symbol,
                      str('{0:.3f}'.format(shares[ticker_symbol])),
                      str('{0:,.2f}'.format(float(price))),
-                     str('{0:,.2f}'.format(float(price) * shares[ticker_symbol]))
+                     str('{0:,.2f}'.format(float(price) * shares[ticker_symbol])),
+                     " "
                     ]
                     )
         #Delay after each request to prevent exceeding Alpha Vantage request limit (5 / min)
