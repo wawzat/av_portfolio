@@ -159,7 +159,6 @@ def getQuotes():
         if ticker_symbol == 'BND':
             bndInitial = float(price)
         totalValueBonds = totalValueBonds + (float(price) * shares[ticker_symbol])
-        if ticker_symbol != 'BND':
         #Delay after each request to prevent exceeding Alpha Vantage request limit (5 / min)
         delayLoopStart = datetime.datetime.now()
         elapsedTime = datetime.datetime.now() - delayLoopStart
@@ -196,16 +195,17 @@ def getQuotes():
     table.add_row([" "," "," "," "," "," "])
     table.add_row(["Bonds"," "," "," "," "," "])
     for ticker_symbol in ticker_symbols_bonds:
-        price = latest_prices_bonds[ticker_symbol]
-        table.add_row(
-                [" ",
-                    ticker_symbol,
-                    str('{0:.3f}'.format(shares[ticker_symbol])),
-                    str('{0:,.2f}'.format(float(price))),
-                    str('{0:,.2f}'.format(float(price) * shares[ticker_symbol])),
-                    " "
-                ]
-                )
+        if ticker_symbol != 'BND':
+            price = latest_prices_bonds[ticker_symbol]
+            table.add_row(
+                    [" ",
+                        ticker_symbol,
+                        str('{0:.3f}'.format(shares[ticker_symbol])),
+                        str('{0:,.2f}'.format(float(price))),
+                        str('{0:,.2f}'.format(float(price) * shares[ticker_symbol])),
+                        " "
+                    ]
+                    )
     table.add_row(["Total Bonds"," "," "," ",str('{0:,.2f}'.format(totalValueBonds)),str('{0:,.2f}'.format(pct_bonds))])
     table.add_row([" "," "," "," "," "," "])
     table.add_row(["Grand Total"," "," "," ",str('{0:,.2f}'.format((totalValueStocks + totalValueBonds)))," "])
