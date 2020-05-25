@@ -174,48 +174,8 @@ def getQuotes():
             disp.image(image)
             disp.show()
             sleep(1)
-    pct_stocks = totalValueStocks / (totalValueBonds + totalValueStocks)
-    pct_bonds = totalValueBonds / (totalValueBonds + totalValueStocks)
-    table = PrettyTable()
-    table.field_names = ["Type","Symbol","Shares","Price","Value","Percent"]
-    table.align = "r"
-    table.add_row(["Stocks"," "," "," "," "," "])
-    for ticker_symbol in ticker_symbols_stocks:
-        price = latest_prices_stocks[ticker_symbol] 
-        table.add_row(
-                [" ", 
-                ticker_symbol,
-                str('{0:.3f}'.format(shares[ticker_symbol])),
-                str('{0:,.2f}'.format(float(price))),
-                str('{0:,.2f}'.format(float(price) * shares[ticker_symbol])),
-                " "
-                ]
-                )
-    table.add_row(["Total Stocks"," "," "," ",str('{0:,.2f}'.format(totalValueStocks)),str('{0:,.2f}'.format(pct_stocks))])
-    table.add_row([" "," "," "," "," "," "])
-    table.add_row(["Bonds"," "," "," "," "," "])
-    for ticker_symbol in ticker_symbols_bonds:
-        if ticker_symbol != 'BND':
-            price = latest_prices_bonds[ticker_symbol]
-            table.add_row(
-                    [" ",
-                        ticker_symbol,
-                        str('{0:.3f}'.format(shares[ticker_symbol])),
-                        str('{0:,.2f}'.format(float(price))),
-                        str('{0:,.2f}'.format(float(price) * shares[ticker_symbol])),
-                        " "
-                    ]
-                    )
-    table.add_row(["Total Bonds"," "," "," ",str('{0:,.2f}'.format(totalValueBonds)),str('{0:,.2f}'.format(pct_bonds))])
-    table.add_row([" "," "," "," "," "," "])
-    table.add_row(["Grand Total"," "," "," ",str('{0:,.2f}'.format((totalValueStocks + totalValueBonds)))," "])
+    console_table(totalValueStocks, totalValueBonds, ticker_symbols_stocks, ticker_symbols_bonds, shares)
     dataDate = datetime.datetime.now().date()
-    now = datetime.datetime.now()
-    dataDateString = now.strftime('%m/%d/%y %I:%M:%S')
-    print(" ")
-    print("Current Quote Data Retreived: " + dataDateString)
-    print(table)
-    print(" ")
     return totalValueStocks, totalValueBonds, vtiInitial, bndInitial, vtiChangePct, bndChangePct, dataDate
 
 # Get change from initial VTI price
@@ -284,6 +244,51 @@ def marketCheck(dataDate):
     else:
         dataToGet = 'NONE'
     return mktStat, dataToGet
+
+
+def console_table(totalValueStocks, totalValueBonds, ticker_symbols_stocks, ticker_symbols_bonds, shares):
+    pct_stocks = totalValueStocks / (totalValueBonds + totalValueStocks)
+    pct_bonds = totalValueBonds / (totalValueBonds + totalValueStocks)
+    table = PrettyTable()
+    table.field_names = ["Type","Symbol","Shares","Price","Value","Percent"]
+    table.align = "r"
+    table.add_row(["Stocks"," "," "," "," "," "])
+    for ticker_symbol in ticker_symbols_stocks:
+        price = latest_prices_stocks[ticker_symbol] 
+        table.add_row(
+                [" ", 
+                ticker_symbol,
+                str('{0:.3f}'.format(shares[ticker_symbol])),
+                str('{0:,.2f}'.format(float(price))),
+                str('{0:,.2f}'.format(float(price) * shares[ticker_symbol])),
+                " "
+                ]
+                )
+    table.add_row(["Total Stocks"," "," "," ",str('{0:,.2f}'.format(totalValueStocks)),str('{0:,.2f}'.format(pct_stocks))])
+    table.add_row([" "," "," "," "," "," "])
+    table.add_row(["Bonds"," "," "," "," "," "])
+    for ticker_symbol in ticker_symbols_bonds:
+        if ticker_symbol != 'BND':
+            price = latest_prices_bonds[ticker_symbol]
+            table.add_row(
+                    [" ",
+                        ticker_symbol,
+                        str('{0:.3f}'.format(shares[ticker_symbol])),
+                        str('{0:,.2f}'.format(float(price))),
+                        str('{0:,.2f}'.format(float(price) * shares[ticker_symbol])),
+                        " "
+                    ]
+                    )
+    table.add_row(["Total Bonds"," "," "," ",str('{0:,.2f}'.format(totalValueBonds)),str('{0:,.2f}'.format(pct_bonds))])
+    table.add_row([" "," "," "," "," "," "])
+    table.add_row(["Grand Total"," "," "," ",str('{0:,.2f}'.format((totalValueStocks + totalValueBonds)))," "])
+    now = datetime.datetime.now()
+    dataDateString = now.strftime('%m/%d/%y %I:%M:%S')
+    print(" ")
+    print("Current Quote Data Retreived: " + dataDateString)
+    print(table)
+    print(" ")
+
 
 def writeMessage(totalValueStocks, totalValueBonds, vtiChangePct, vtiDataTime, bndChangePct, bndDataTime, mktStat, menuNumber):
     forecastStocks = totalValueStocks * (1.0 + vtiChangePct)
