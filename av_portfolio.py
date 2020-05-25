@@ -246,7 +246,9 @@ def marketCheck(dataDate):
     return mktStat, dataToGet
 
 
-def console_table(totalValueStocks, totalValueBonds, ticker_symbols_stocks, ticker_symbols_bonds, shares):
+def console_table(totalValueStocks, totalValueBonds, ticker_symbols_stocks,
+     ticker_symbols_bonds, latest_prices_stocks, latest_prices_bonds, shares
+     ):
     pct_stocks = totalValueStocks / (totalValueBonds + totalValueStocks)
     pct_bonds = totalValueBonds / (totalValueBonds + totalValueStocks)
     table = PrettyTable()
