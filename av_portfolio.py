@@ -174,7 +174,9 @@ def getQuotes():
             disp.image(image)
             disp.show()
             sleep(1)
-    console_table(totalValueStocks, totalValueBonds, ticker_symbols_stocks, ticker_symbols_bonds, shares)
+    console_table(totalValueStocks, totalValueBonds, ticker_symbols_stocks,
+         ticker_symbols_bonds, latest_prices_stocks, latest_prices_bonds, shares
+         )
     dataDate = datetime.datetime.now().date()
     return totalValueStocks, totalValueBonds, vtiInitial, bndInitial, vtiChangePct, bndChangePct, dataDate
 
