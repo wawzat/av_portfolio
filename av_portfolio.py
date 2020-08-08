@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # Fund portfolio retrival and forecast from Alpha Vantage
 # Retrieves current quantity of shares from a Google sheet.
-# Retreives current fund values and forecasts change in stock portfolio value using VTI and BND as proxies for overall market.
+# Retreives current fund values and forecasts change in stock portfolio 
+#  value using VTI and BND as proxies for overall market.
 # Uses Adafruit 128x64 OLED Bonnet for Raspberry Pi[ID:3531]
 # Requires getShares.py
 # Issues Todo: elapsed time for percent change screen time zone issue
@@ -56,7 +57,8 @@ x = 0
 # Load default font.
 # font = ImageFont.load_default()
 
-# Or alternatively load TTF fonts.  Make sure the .ttf font file is in the same directory as the python script.
+# Or alternatively load TTF fonts.
+# Make sure the .ttf font file is in the same directory as the python script.
 # Some other nice fonts to try: http://www.dafont.com/bitmap.php
 # JSL Load Custom Fonts
 font14 = ImageFont.truetype('VCR_OSD_MONO_1.001.ttf', 14)
@@ -129,7 +131,8 @@ def getQuotes():
     time_remaining = (len(ticker_symbols_stocks) + len(ticker_symbols_bonds)) * 15
     ts = TimeSeries(key='ALPHAVANTAGE_API_KEY')
     for ticker_symbol in ticker_symbols_stocks:
-        data, meta_data = ts.get_intraday(symbol=ticker_symbol,interval='1min')
+        #data, meta_data = ts.get_intraday(symbol=ticker_symbol,interval='1min')
+        data, meta_data = ts.get_daily(symbol=ticker_symbol)
         latest = max(data)
         latest_prices_stocks[ticker_symbol] = data[latest]['4. close']
         price = data[latest]['4. close']
@@ -152,7 +155,8 @@ def getQuotes():
             disp.show()
             sleep(1)
     for ticker_symbol in ticker_symbols_bonds:
-        data, meta_data = ts.get_intraday(symbol=ticker_symbol,interval='1min')
+        #data, meta_data = ts.get_intraday(symbol=ticker_symbol,interval='1min')
+        data, meta_data = ts.get_daily(symbol=ticker_symbol)
         latest = max(data)
         latest_prices_bonds[ticker_symbol] = data[latest]['4. close']
         price = data[latest]['4. close']
@@ -180,6 +184,7 @@ def getQuotes():
     dataDate = datetime.datetime.now().date()
     return totalValueStocks, totalValueBonds, vtiInitial, bndInitial, vtiChangePct, bndChangePct, dataDate
 
+
 # Get change from initial VTI price
 def getVTI(vtiInitial, vtiChangePct, vtiDataTime, mktStat, menuNumber):
     ts = TimeSeries(key='ALPHAVANTAGE_API_KEY')
@@ -192,7 +197,17 @@ def getVTI(vtiInitial, vtiChangePct, vtiDataTime, mktStat, menuNumber):
     elapsedTime = datetime.datetime.now() - delayLoopStart
     while elapsedTime.seconds <= 14:
         elapsedTime = datetime.datetime.now() - delayLoopStart
-        menuNumber = buttonCheck(button_A, button_B, button_C, button_U, button_D, button_L, button_R, mktStat, menuNumber)
+        menuNumber = buttonCheck(
+            button_A,
+            button_B,
+            button_C,
+            button_U,
+            button_D,
+            button_L,
+            button_R,
+            mktStat,
+            menuNumber
+            )
         sleep(.01)
     if vtiTimeNow > vtiDataTime:
         price = data[latest]['4. close']
@@ -203,6 +218,7 @@ def getVTI(vtiInitial, vtiChangePct, vtiDataTime, mktStat, menuNumber):
     else:
         print("Retrived old VTI Data, Ignoring. vtiDataTime " + str(vtiDataTime) + " vtiTimeNow " + str(vtiTimeNow))
     return vtiChangePct, vtiDataTime
+
 
 # Get change from initial BND price
 def getBND(bndInitial, bndChangePct, bndDataTime, mktStat, menuNumber):
@@ -216,7 +232,17 @@ def getBND(bndInitial, bndChangePct, bndDataTime, mktStat, menuNumber):
     elapsedTime = datetime.datetime.now() - delayLoopStart
     while elapsedTime.seconds <= 14:
         elapsedTime = datetime.datetime.now() - delayLoopStart
-        menuNumber = buttonCheck(button_A, button_B, button_C, button_U, button_D, button_L, button_R, mktStat, menuNumber)
+        menuNumber = buttonCheck(
+            button_A,
+            button_B,
+            button_C,
+            button_U,
+            button_D,
+            button_L,
+            button_R,
+            mktStat,
+            menuNumber
+            )
         sleep(1)
     if bndTimeNow > bndDataTime:
         price = data[latest]['4. close']
@@ -227,6 +253,7 @@ def getBND(bndInitial, bndChangePct, bndDataTime, mktStat, menuNumber):
     else:
         print("Retrived old BND Data, Ignoring. bndDataTime " + str(bndDataTime) + " bndTimeNow " + str(bndTimeNow))
     return bndChangePct, bndDataTime
+
 
 def marketCheck(dataDate):
     now = datetime.datetime.now().strftime('%H%M')
@@ -314,7 +341,6 @@ def writeMessage(totalValueStocks, totalValueBonds, vtiChangePct, vtiDataTime, b
         monthsText = " Mnths "
     else:
         monthsText = " Mnth "
-
     messages = []
     messages.append('${:,.0f}'.format(forecastTotalValue))                                                           #0
     messages.append('{0:.1f}'.format(vtiChangePct*100) +"%" + " " + mktStat)                                         #1
@@ -443,6 +469,7 @@ def writeMessage(totalValueStocks, totalValueBonds, vtiChangePct, vtiDataTime, b
 
     return
 
+
 def buttonCheck(button_A, button_B, button_C, button_U, button_D, button_L, button_R, mktStat, menuNumber):
     global previous_menuNumber
     global button_press_time
@@ -511,7 +538,16 @@ def buttonCheck(button_A, button_B, button_C, button_U, button_D, button_L, butt
         or not button_L.value or not button_R.value 
         or not button_C.value or not button_A.value 
         or not button_B.value or menuNumber == 5):
-            writeMessage(totalValueStocks, totalValueBonds, vtiChangePct, vtiDataTime, bndChangePct, bndDataTime, mktStat, menuNumber)
+            writeMessage(
+                totalValueStocks,
+                totalValueBonds,
+                vtiChangePct,
+                vtiDataTime,
+                bndChangePct,
+                bndDataTime,
+                mktStat,
+                menuNumber
+                )
     return menuNumber
 
 try:
